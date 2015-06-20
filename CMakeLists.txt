@@ -9,6 +9,7 @@ add_definitions("-Wcast-align -Wcast-qual -Wswitch-enum -Wconversion -Wformat=2 
 
 set(SRCS
 src/main.cpp
+src/timers.cpp
 )
 add_executable(wfg ${SRCS})
 

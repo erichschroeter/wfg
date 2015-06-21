@@ -11,6 +11,7 @@ SquareWave::SquareWave(unsigned int lowDuration, unsigned int highDuration)
     SetDuration(0);
     SetLowDuration(lowDuration);
     SetHighDuration(highDuration);
+    SetContinuous(false);
 }
 
 SquareWave::~SquareWave()
@@ -24,6 +25,7 @@ void SquareWave::Generate()
     struct timespec durationStart;
     bool activeHigh = false;
     bool doGenerateInfinitely = (_duration == 0);
+    bool isValueChanged = true;
 
     clock_gettime(CLOCK_MONOTONIC, &start);
     clock_gettime(CLOCK_MONOTONIC, &durationStart);
@@ -38,15 +40,18 @@ void SquareWave::Generate()
         if ((activeHigh && (diff_micro(&durationStart, &now) > _highDuration)) ||
             (!activeHigh && (diff_micro(&durationStart, &now) > _lowDuration))) {
             activeHigh = !activeHigh;
+            isValueChanged = true;
             clock_gettime(CLOCK_MONOTONIC, &durationStart);
         }
 
-        if (activeHigh) {
-            std::cout << "1" << std::endl;
-        } else {
-            std::cout << "0" << std::endl;
+        if (isValueChanged || IsContinuousEnabled()) {
+            if (activeHigh) {
+                std::cout << "1" << std::endl;
+            } else {
+                std::cout << "0" << std::endl;
+            }
         }
 
-
+        isValueChanged = false;
     }
 }

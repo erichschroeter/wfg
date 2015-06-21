@@ -14,9 +14,12 @@ public:
     unsigned int GetLowDuration() { return _lowDuration; }
     void SetHighDuration(unsigned int duration) { _highDuration = duration; }
     unsigned int GetHighDuration() { return _highDuration; }
+    void SetContinuous(bool enable) { _isContinuousEnabled = enable; }
+    bool IsContinuousEnabled() { return _isContinuousEnabled; }
 
 private:
     unsigned int _duration; // microseconds
     unsigned int _lowDuration; // microseconds
     unsigned int _highDuration; // microseconds
+    bool _isContinuousEnabled;
 };

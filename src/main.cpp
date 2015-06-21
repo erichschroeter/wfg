@@ -75,7 +75,6 @@ int main(int argc, char **argv)
     std::string waveStr(argv[optind]);
 
     if (waveStr == "square") {
-        std::cout << "generating Square wave" << std::endl;
         SquareWave wave(lowDuration, highDuration);
         wave.SetDuration(5000000);
         wave.Generate();

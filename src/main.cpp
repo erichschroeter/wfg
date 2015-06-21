@@ -16,6 +16,7 @@ static const std::string USAGE = ""
 "Options:\n"
 "  -h, --help              Print this menu and exit.\n"
 "  -v, --version           Print the program version and exit.\n"
+"  -t, --timeout           The milliseconds for how long to generate wave.\n"
 "  -0                      The milliseconds for active low.\n"
 "  -1                      The milliseconds for active high.\n"
 "\n";
@@ -26,14 +27,16 @@ int main(int argc, char **argv)
     int optionIndex;
     int lowDuration = 1000000;
     int highDuration = 1000000;
+    int timeout = 0;
     struct option options[] = {
         { "help", no_argument, NULL, 'h' },
         { "version", no_argument, NULL, 'v' },
+        { "timeout", required_argument, NULL, 't' },
         { 0, 0, 0, 0 },
     };
 
     while (1) {
-        opt = getopt_long(argc, argv, "hv0:1:", options, &optionIndex);
+        opt = getopt_long(argc, argv, "hv0:1:t:", options, &optionIndex);
 
         if (opt == -1) {
             break;
@@ -47,6 +50,12 @@ int main(int argc, char **argv)
         case 'v':
             std::cout << VERSION << std::endl;
             return 0;
+
+        case 't': {
+            std::stringstream str(optarg);
+            str >> timeout;
+            break;
+        }
 
         case '0': {
             std::stringstream str(optarg);
@@ -76,7 +85,7 @@ int main(int argc, char **argv)
 
     if (waveStr == "square") {
         SquareWave wave(lowDuration, highDuration);
-        wave.SetDuration(5000000);
+        wave.SetDuration(timeout);
         wave.Generate();
     }
 
